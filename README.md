@@ -1,28 +1,49 @@
+# API Documentation
+
+## Заголовки
+
+Для доступу до захищених маршрутів потрібен заголовок `Authorization` з токеном:
+
+Authorization: Bearer <JWT Token>
 
 ## Маршрути
-### /orthopedic-needs
-- `GET /orthopedic-needs`: Отримати дані щодо ортопедичних потреб.
-- `POST /orthopedic-needs`: Додати нову ортопедичну потребу.
-- `DELETE /orthopedic-needs/:id`: Видалити ортопедичну потребу за ідентифікатором.
 
-### /orthopedic-reasons
-- `GET /orthopedic-reasons`: Отримати дані щодо ортопедичних причин.
-- `POST /orthopedic-reasons`: Додати нову ортопедичну причину.
-- `DELETE /orthopedic-reasons/:id`: Видалити ортопедичну причину за ідентифікатором.
+### 1. Отримати всі дані для заданої мови
 
-### /orthopedic-advantages
-- `GET /orthopedic-advantages`: Отримати дані щодо ортопедичних переваг.
-- `POST /orthopedic-advantages`: Додати нову ортопедичну перевагу.
-- `DELETE /orthopedic-advantages/:id`: Видалити ортопедичну перевагу за ідентифікатором.
-  s
-### /experts
-- `GET /experts`: Отримати дані про експертів.
-- `POST /experts`: Додати нового експерта.
-- `DELETE /experts/:id`: Видалити експерта за ідентифікатором.
+- **URL:** `/fop-data/:lang`
+- **Метод:** `GET`
+- **Опис:** Отримати всі дані для заданої мови.
+- **Захист:** Немає
+- **Параметри URL:**
+  - `lang` (string) - код мови (наприклад, 'ua', 'en')
 
-### /reviews
-- `GET /reviews`: Отримати дані про відгуки.
-- `POST /reviews`: Додати новий відгук.
-- `DELETE /reviews/:id`: Видалити відгук за ідентифікатором.
+### 2. Додати нові дані для мови
 
-nrn f ddb fvfdvavcd lkka
+- **URL:** `/fop-data`
+- **Метод:** `POST`
+- **Опис:** Додати нові дані для мови.
+- **Захист:** Аутентифікація та авторизація адміністратора
+- **Тіло запиту:**
+  - `language` (string) - код мови
+  - `first_fop_text` (string) - текст перший
+  - `second_fop_text` (string) - текст другий
+  - `third_fop_text` (string) - текст третій
+  - `fourth_fop_text` (string) - текст четвертий
+  - `first_date_fop` (date) - перша дата
+  - `second_date_fop` (date) - друга дата
+
+### 3. Оновити дані для мови
+
+- **URL:** `/fop-data/:id`
+- **Метод:** `PUT`
+- **Опис:** Оновити дані для мови.
+- **Захист:** Аутентифікація та авторизація адміністратора
+- **Параметри URL:**
+  - `id` (integer) - ідентифікатор запису
+- **Тіло запиту:**
+  - `first_fop_text` (string) - текст перший
+  - `second_fop_text` (string) - текст другий
+  - `third_fop_text` (string) - текст третій
+  - `fourth_fop_text` (string) - текст четвертий
+  - `first_date_fop` (date) - перша дата
+  - `second_date_fop` (date) - друга дата

@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 4002;
 app.use(cors());
 const upload = multer();
 
+
 app.get("/", (req, res) => {
   res.send("Welcome to PROSTOPOO API");
 });
@@ -31,6 +32,7 @@ const variationRoutes = require("./routes/variationsRoutes");
 const individualRoutes = require("./routes/individualRoutes");
 const individualVariationRoutes = require("./routes/individualVariationRoutes");
 const certificateRoutes = require("./routes/certificateRoutes");
+const pay = require("./routes/pay");
 
 app.use("/auth", authRoutes);
 app.use("/workers", workersRoutes);
@@ -40,6 +42,8 @@ app.use("/variations", variationRoutes);
 app.use("/individual-insoles", individualRoutes);
 app.use("/individual-insoles-variations", individualVariationRoutes);
 app.use("/certificates", certificateRoutes);
+app.use("/pay", pay);
+
 
 app.use("/storage", storageRoutes);
 

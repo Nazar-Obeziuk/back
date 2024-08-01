@@ -4,11 +4,9 @@ const fopController = require('../controllers/fopController');
 const { authenticateToken, authorizeAdmin } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
 
-
-// Отримати всі дані для заданої мови
 router.get('/:lang', fopController.getFopData);
+router.get('/one/:id', fopController.getOneFopData); // Маршрут для отримання одного запису
 
-// Додати нові дані для мови (захищений маршрут)
 router.post(
     '/',
     authenticateToken,
@@ -17,7 +15,6 @@ router.post(
     fopController.createFopData
 );
 
-// Оновити дані для мови (захищений маршрут)
 router.put(
     '/:id',
     authenticateToken,
@@ -25,5 +22,12 @@ router.put(
     upload.none(),
     fopController.updateFopData
 );
+
+router.delete(
+    '/:id',
+    authenticateToken,
+    authorizeAdmin,
+    fopController.deleteFopData
+); // Маршрут для видалення запису
 
 module.exports = router;

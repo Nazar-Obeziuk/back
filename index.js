@@ -33,6 +33,7 @@ const individualRoutes = require("./routes/individualRoutes");
 const individualVariationRoutes = require("./routes/individualVariationRoutes");
 const certificateRoutes = require("./routes/certificateRoutes");
 const pay = require("./routes/pay");
+const fop = require("./routes/fopRoutes");
 
 app.use("/auth", authRoutes);
 app.use("/workers", workersRoutes);
@@ -43,6 +44,7 @@ app.use("/individual-insoles", individualRoutes);
 app.use("/individual-insoles-variations", individualVariationRoutes);
 app.use("/certificates", certificateRoutes);
 app.use("/pay", pay);
+app.use("/fop-data", fop);
 
 
 app.use("/storage", storageRoutes);

@@ -23,6 +23,28 @@ exports.getFopData = (req, res) => {
   });
 };
 
+exports.getOneFopData = (req, res) => {
+    const connection = mysql.createConnection(dbConfig);
+    const { id } = req.params;
+
+    connection.connect((err) => {
+        if (err) {
+            console.error("Помилка підключення до бази даних: " + err.stack);
+            return res.status(500).send("Помилка підключення до бази даних");
+        }
+
+        const sqlQuery = "SELECT * FROM fop_data WHERE id = ?";
+        connection.query(sqlQuery, [id], (err, results) => {
+            if (err) {
+                console.error("Помилка виконання запиту: " + err.message);
+                return res.status(500).send("Помилка сервера");
+            }
+            res.json(results[0]);
+            connection.end();
+        });
+    });
+};
+
 exports.createFopData = (req, res) => {
   const connection = mysql.createConnection(dbConfig);
   const {
@@ -109,4 +131,26 @@ exports.updateFopData = (req, res) => {
       }
     );
   });
+};
+
+exports.deleteFopData = (req, res) => {
+    const connection = mysql.createConnection(dbConfig);
+    const { id } = req.params;
+
+    connection.connect((err) => {
+        if (err) {
+            console.error("Помилка підключення до бази даних: " + err.stack);
+            return res.status(500).send("Помилка підключення до бази даних");
+        }
+
+        const sqlQuery = "DELETE FROM fop_data WHERE id = ?";
+        connection.query(sqlQuery, [id], (err, results) => {
+            if (err) {
+                console.error("Помилка виконання запиту: " + err.message);
+                return res.status(500).send("Помилка сервера");
+            }
+            res.json({ message: "Дані успішно видалено" });
+            connection.end();
+        });
+    });
 };

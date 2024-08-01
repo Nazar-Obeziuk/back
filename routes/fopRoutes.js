@@ -25,4 +25,11 @@ router.put(
   fopController.updateFopData
 );
 
+router.delete(
+  "/:id",
+  authenticateToken,
+  authorizeAdmin,
+  fopController.deleteFopData
+);
+
 module.exports = router;

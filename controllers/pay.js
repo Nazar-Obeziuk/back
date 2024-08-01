@@ -1,70 +1,29 @@
-const axios = require("axios");
-const CryptoJS = require("crypto-js");
+const LiqPay = require("../lib/liqpay");
 
-const myHost = "https://your-insole-shop.com";
+const liqpay = new LiqPay(
+  "sandbox_i92883785959",
+  "sandbox_Q3JbH8QzJ07YoaIdnmV6cRxhYC7pFJwFWuxTTHcY"
+);
 
-exports.createPayment = async (req, res) => {
-  let randomTime = (Math.random() * 30 + 2) * 100;
-  setTimeout(async () => {
-    console.log("create-payment");
-    const merchantId = "1396424";
-    const password = "test";
-
-    const order_id = "83562438756384";
-    const firstName = "John";
-    const lastName = "Doe";
-    const phoneNumber = "1234567890";
-    const amount = 100;
-
-    const order_desc = `Order for ${firstName} ${lastName}, Phone: ${phoneNumber}`;
-
-    try {
-      const requestData = {
-        order_id: order_id,
-        order_desc: order_desc,
-        currency: "USD",
-        response_url: myHost + "/payment-success",
-        amount: amount * 100,
-        merchant_data: JSON.stringify({ firstName, lastName, phoneNumber }),
-      };
-
-      requestData["signature"] = getSignature(
-        merchantId,
-        password,
-        requestData
-      );
-
-      console.log("Request Data:", requestData);
-
-      const response = await axios.post(
-        "https://pay.fondy.eu/api/checkout/url/",
-        { request: requestData },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      console.log("Fondy API Response:", response.data);
-
-      const data = response.data;
-      const checkoutUrl = data.response.checkout_url;
-      res.json({ checkout_url: checkoutUrl });
-    } catch (error) {
-      console.error("Error:", error);
-      res.status(500).send("Internal Server Error");
-    }
-  }, randomTime);
+const generateUniqueOrderId = () => {
+  const now = new Date();
+  const timestamp = now.toISOString().replace(/[-:.]/g, ""); // Remove special characters
+  const randomPart = Math.floor(Math.random() * 10000); // Generate a random number
+  return `order_${timestamp}_${randomPart}`;
 };
 
-function getSignature(merchant_id, password, params) {
-  params["merchant_id"] = merchant_id;
-  params = Object.keys(params)
-    .sort()
-    .map((key) => params[key])
-    .filter((value) => value !== "")
-    .join("|");
-  params = password + "|" + params;
-  return CryptoJS.SHA1(params).toString(CryptoJS.enc.Hex);
-}
+exports.getPaymentLink = (req, res) => {
+  const { amount, language, description } = req.body;
+
+  const params = {
+    version: 3,
+    action: "pay",
+    amount: amount,
+    currency: "UAH",
+    description: description,
+    order_id: generateUniqueOrderId(),
+    language: language || "uk",
+  };
+  const link = liqpay.cnb_link(params);
+  res.send({ link });
+};

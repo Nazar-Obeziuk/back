@@ -24,25 +24,25 @@ exports.getFopData = (req, res) => {
 };
 
 exports.getOneFopData = (req, res) => {
-    const connection = mysql.createConnection(dbConfig);
-    const { id } = req.params;
+  const connection = mysql.createConnection(dbConfig);
+  const { id } = req.params;
 
-    connection.connect((err) => {
-        if (err) {
-            console.error("Помилка підключення до бази даних: " + err.stack);
-            return res.status(500).send("Помилка підключення до бази даних");
-        }
+  connection.connect((err) => {
+    if (err) {
+      console.error("Помилка підключення до бази даних: " + err.stack);
+      return res.status(500).send("Помилка підключення до бази даних");
+    }
 
-        const sqlQuery = "SELECT * FROM fop_data WHERE id = ?";
-        connection.query(sqlQuery, [id], (err, results) => {
-            if (err) {
-                console.error("Помилка виконання запиту: " + err.message);
-                return res.status(500).send("Помилка сервера");
-            }
-            res.json(results[0]);
-            connection.end();
-        });
+    const sqlQuery = "SELECT * FROM fop_data WHERE id = ?";
+    connection.query(sqlQuery, [id], (err, results) => {
+      if (err) {
+        console.error("Помилка виконання запиту: " + err.message);
+        return res.status(500).send("Помилка сервера");
+      }
+      res.json(results[0]);
+      connection.end();
     });
+  });
 };
 
 exports.createFopData = (req, res) => {
@@ -55,6 +55,11 @@ exports.createFopData = (req, res) => {
     fourth_fop_text,
     first_date_fop,
     second_date_fop,
+    code_edr_fop,
+    register_date_fop,
+    bank_fop,
+    number_fop,
+    address_fop,
   } = req.body;
 
   connection.connect((err) => {
@@ -64,7 +69,7 @@ exports.createFopData = (req, res) => {
     }
 
     const sqlQuery =
-      "INSERT INTO fop_data (language, first_fop_text, second_fop_text, third_fop_text, fourth_fop_text, first_date_fop, second_date_fop) VALUES (?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO fop_data (language, first_fop_text, second_fop_text, third_fop_text, fourth_fop_text, first_date_fop, second_date_fop, code_edr_fop, register_date_fop, bank_fop, number_fop, address_fop) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     connection.query(
       sqlQuery,
       [
@@ -75,6 +80,11 @@ exports.createFopData = (req, res) => {
         fourth_fop_text,
         first_date_fop,
         second_date_fop,
+        code_edr_fop,
+        register_date_fop,
+        bank_fop,
+        number_fop,
+        address_fop,
       ],
       (err, results) => {
         if (err) {
@@ -100,6 +110,11 @@ exports.updateFopData = (req, res) => {
     fourth_fop_text,
     first_date_fop,
     second_date_fop,
+    code_edr_fop,
+    register_date_fop,
+    bank_fop,
+    number_fop,
+    address_fop,
   } = req.body;
 
   connection.connect((err) => {
@@ -109,7 +124,7 @@ exports.updateFopData = (req, res) => {
     }
 
     const sqlQuery =
-      "UPDATE fop_data SET first_fop_text = ?, second_fop_text = ?, third_fop_text = ?, fourth_fop_text = ?, first_date_fop = ?, second_date_fop = ? WHERE id = ?";
+      "UPDATE fop_data SET first_fop_text = ?, second_fop_text = ?, third_fop_text = ?, fourth_fop_text = ?, first_date_fop = ?, second_date_fop = ?, code_edr_fop = ?, register_date_fop = ?, bank_fop = ?, number_fop = ?, address_fop = ? WHERE id = ?";
     connection.query(
       sqlQuery,
       [
@@ -119,6 +134,11 @@ exports.updateFopData = (req, res) => {
         fourth_fop_text,
         first_date_fop,
         second_date_fop,
+        code_edr_fop,
+        register_date_fop,
+        bank_fop,
+        number_fop,
+        address_fop,
         id,
       ],
       (err, results) => {
@@ -134,23 +154,23 @@ exports.updateFopData = (req, res) => {
 };
 
 exports.deleteFopData = (req, res) => {
-    const connection = mysql.createConnection(dbConfig);
-    const { id } = req.params;
+  const connection = mysql.createConnection(dbConfig);
+  const { id } = req.params;
 
-    connection.connect((err) => {
-        if (err) {
-            console.error("Помилка підключення до бази даних: " + err.stack);
-            return res.status(500).send("Помилка підключення до бази даних");
-        }
+  connection.connect((err) => {
+    if (err) {
+      console.error("Помилка підключення до бази даних: " + err.stack);
+      return res.status(500).send("Помилка підключення до бази даних");
+    }
 
-        const sqlQuery = "DELETE FROM fop_data WHERE id = ?";
-        connection.query(sqlQuery, [id], (err, results) => {
-            if (err) {
-                console.error("Помилка виконання запиту: " + err.message);
-                return res.status(500).send("Помилка сервера");
-            }
-            res.json({ message: "Дані успішно видалено" });
-            connection.end();
-        });
+    const sqlQuery = "DELETE FROM fop_data WHERE id = ?";
+    connection.query(sqlQuery, [id], (err, results) => {
+      if (err) {
+        console.error("Помилка виконання запиту: " + err.message);
+        return res.status(500).send("Помилка сервера");
+      }
+      res.json({ message: "Дані успішно видалено" });
+      connection.end();
     });
+  });
 };

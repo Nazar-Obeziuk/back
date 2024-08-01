@@ -8,6 +8,7 @@ const {
 const upload = require("../middleware/uploadMiddleware");
 
 router.get("/:lang", fopController.getFopData);
+router.get("/one/:id", fopController.getOneFopData);
 
 router.post(
   "/",

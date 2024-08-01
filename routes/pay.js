@@ -1,8 +1,8 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
+const payController = require('../controllers/pay');
+const upload = require('../middleware/uploadMiddleware');
 
-const pay = require("../controllers/pay");
-
-router.get("/", pay.createPayment);
+router.post('/link', upload.none(), payController.getPaymentLink);
 
 module.exports = router;

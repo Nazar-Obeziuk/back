@@ -2,14 +2,14 @@ const LiqPay = require("../lib/liqpay");
 const Monobank = require('../lib/monobank');
 
 const liqpay = new LiqPay(
-    "sandbox_i92883785959",
-    "sandbox_Q3JbH8QzJ07YoaIdnmV6cRxhYC7pFJwFWuxTTHcY"
+    process.env.LIQPAY_PUBLIC_KEY,
+    process.env.LIQPAY_PRIVATE_KEY
 );
 
 const generateUniqueOrderId = () => {
     const now = new Date();
-    const timestamp = now.toISOString().replace(/[-:.]/g, ""); // Remove special characters
-    const randomPart = Math.floor(Math.random() * 10000); // Generate a random number
+    const timestamp = now.toISOString().replace(/[-:.]/g, "");
+    const randomPart = Math.floor(Math.random() * 10000);
     return `order_${timestamp}_${randomPart}`;
 };
 
@@ -30,7 +30,7 @@ exports.getPaymentLink = (req, res) => {
 };
 
 
-const monobank = new Monobank('m8ZvgMe9sNwt6Z1uVJapVZw'); // Використовуйте ваш токен
+const monobank = new Monobank(process.env.MONOBANK_TOKEN);
 
 exports.createPaymentMonobank = async (req, res) => {
     try {
@@ -38,7 +38,7 @@ exports.createPaymentMonobank = async (req, res) => {
 
         console.log('Request data:', { amount, ccy, redirectUrl, webHookUrl });
 
-        const payment = await monobank.createPayment(amount, ccy, redirectUrl, webHookUrl);
+        const payment = await monobank.createPayment((amount * 100), ccy, redirectUrl, webHookUrl);
         res.send({ payment });
     } catch (error) {
         console.error('Error creating payment:', error.response ? error.response.data : error.message);
